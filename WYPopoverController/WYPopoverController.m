@@ -58,16 +58,18 @@ static char const * const UINavigationControllerEmbedInPopoverTagKey = "UINaviga
 
 @dynamic embedInPopover;
 
-+ (void)load
-{
-    Method original, swizzle;
-    
-    original = class_getInstanceMethod(self, @selector(pushViewController:animated:));
-    
-    swizzle = class_getInstanceMethod(self, @selector(sizzled_pushViewController:animated:));
-    
-    method_exchangeImplementations(original, swizzle);
-}
+// Remove method swizzling
+//
+//+ (void)load
+//{
+//    Method original, swizzle;
+//    
+//    original = class_getInstanceMethod(self, @selector(pushViewController:animated:));
+//    
+//    swizzle = class_getInstanceMethod(self, @selector(sizzled_pushViewController:animated:));
+//    
+//    method_exchangeImplementations(original, swizzle);
+//}
 
 - (BOOL)isEmbedInPopover
 {
@@ -88,20 +90,22 @@ static char const * const UINavigationControllerEmbedInPopoverTagKey = "UINaviga
     objc_setAssociatedObject(self, UINavigationControllerEmbedInPopoverTagKey, [NSNumber numberWithBool:value], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void)sizzled_pushViewController:(UIViewController *)viewController animated:(BOOL)animated
-{
-    if (self.isEmbedInPopover)
-    {
-#ifdef WY_BASE_SDK_7_ENABLED
-        if ([viewController respondsToSelector:@selector(setEdgesForExtendedLayout:)])
-        {
-            viewController.edgesForExtendedLayout = UIRectEdgeNone;
-        }
-#endif
-    }
-    
-    [self sizzled_pushViewController:viewController animated:animated];
-}
+// Remove method swizzling
+//
+//- (void)sizzled_pushViewController:(UIViewController *)viewController animated:(BOOL)animated
+//{
+//    if (self.isEmbedInPopover)
+//    {
+//#ifdef WY_BASE_SDK_7_ENABLED
+//        if ([viewController respondsToSelector:@selector(setEdgesForExtendedLayout:)])
+//        {
+//            viewController.edgesForExtendedLayout = UIRectEdgeNone;
+//        }
+//#endif
+//    }
+//    
+//    [self sizzled_pushViewController:viewController animated:animated];
+//}
 
 @end
 
