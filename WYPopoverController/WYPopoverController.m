@@ -671,7 +671,7 @@ static CGFloat edgeSizeFromCornerRadius(CGFloat cornerRadius) {
             appearance.innerShadowOffset = CGSizeZero;
             appearance.innerCornerRadius = 0;
             appearance.viewContentInsets = UIEdgeInsetsZero;
-            appearance.overlayColor = [UIColor colorWithWhite:1 alpha:0.10];
+            appearance.overlayColor = [UIColor colorWithWhite:1 alpha:0.90]; // was alpha 0.10
         }
     }
 }
