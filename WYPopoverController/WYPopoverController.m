@@ -614,12 +614,6 @@ static CGFloat edgeSizeFromCornerRadius(CGFloat cornerRadius) {
         if (WY_IS_IOS_LESS_THAN(@"7.0"))
         {
             appearance.tintColor = nil;
-            
-#pragma clang diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated"
-            appearance.strokeColor = nil;
-#pragma clang diagnostic pop
-            
             appearance.outerStrokeColor = nil;
             appearance.innerStrokeColor = nil;
             appearance.fillTopColor = nil;
@@ -645,12 +639,6 @@ static CGFloat edgeSizeFromCornerRadius(CGFloat cornerRadius) {
         else
         {
             appearance.tintColor = nil;
-            
-#pragma clang diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated"
-            appearance.strokeColor = [UIColor clearColor];
-#pragma clang diagnostic pop
-            
             appearance.outerStrokeColor = [UIColor clearColor];
             appearance.innerStrokeColor = [UIColor clearColor];
             appearance.fillTopColor = nil;
@@ -1575,12 +1563,6 @@ static CGFloat edgeSizeFromCornerRadius(CGFloat cornerRadius) {
         WYPopoverBackgroundView* appearance = [WYPopoverBackgroundView appearance];
         
         containerView.tintColor = appearance.tintColor;
-        
-#pragma clang diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated"
-        containerView.strokeColor = appearance.strokeColor;
-#pragma clang diagnostic pop
-        
         containerView.outerStrokeColor = appearance.outerStrokeColor;
         containerView.innerStrokeColor = appearance.innerStrokeColor;
         containerView.fillTopColor = appearance.fillTopColor;
