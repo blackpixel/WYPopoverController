@@ -1550,9 +1550,21 @@ static CGFloat edgeSizeFromCornerRadius(CGFloat cornerRadius) {
         
         containerView = [[WYPopoverBackgroundView alloc] initWithContentSize:contentViewSize];
 		WYPopoverBackgroundView* appearance = [WYPopoverBackgroundView appearance];
-		appearance.overlayColor = self.backgroundOverlayColor;
-		appearance.arrowBase = self.arrowWidth;
-		appearance.arrowHeight = self.arrowHeight;
+		if (self.backgroundOverlayColor) {
+			appearance.overlayColor = self.backgroundOverlayColor;
+		}
+		if (self.backgroundFillTopColor) {
+			appearance.fillTopColor = self.backgroundFillTopColor;
+		}
+		if (self.backgroundFillBottomColor) {
+			appearance.fillBottomColor = self.backgroundFillBottomColor;
+		}
+		if (self.arrowWidth > 0) {
+			appearance.arrowBase = self.arrowWidth;
+		}
+		if (self.arrowHeight > 0) {
+			appearance.arrowHeight = self.arrowHeight;
+		}
 
         [overlayView addSubview:containerView];
         
