@@ -99,6 +99,8 @@ typedef NS_OPTIONS(NSUInteger, WYPopoverAnimationOptions) {
 @property (nonatomic, strong, readonly) UIViewController* contentViewController;
 @property (nonatomic, assign) CGSize popoverContentSize;
 @property (nonatomic, strong) UIColor *backgroundOverlayColor;
+@property (nonatomic, assign) float arrowWidth;
+@property (nonatomic, assign) float arrowHeight;
 
 - (id)initWithContentViewController:(UIViewController *)viewController;
 
