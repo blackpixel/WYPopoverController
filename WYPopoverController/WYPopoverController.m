@@ -26,6 +26,7 @@
 #import "WYPopoverController.h"
 
 #import <objc/runtime.h>
+#import <tgmath.h>
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 70000
     #define WY_BASE_SDK_7_ENABLED
@@ -167,8 +168,8 @@ static char const * const UINavigationControllerEmbedInPopoverTagKey = "UINaviga
     
     if (areaSize.width > 0 && areaSize.height > 0)
     {
-        CGFloat w1 = ceilf(areaSize.width / 10.0);
-        CGFloat h1 = ceilf(areaSize.height / 10.0);
+        CGFloat w1 = ceilf(areaSize.width / 10.0f);
+        CGFloat h1 = ceilf(areaSize.height / 10.0f);
         
         result = (w1 * h1);
     }
@@ -296,9 +297,9 @@ static CGFloat edgeSizeFromCornerRadius(CGFloat cornerRadius) {
     CGFloat rFloat, gFloat, bFloat, aFloat;
     [self getValueOfRed:&rFloat green:&gFloat blue:&bFloat alpha:&aFloat];
     
-    return [UIColor colorWithRed:MIN(rFloat + d, 1.0)
-                           green:MIN(gFloat + d, 1.0)
-                            blue:MIN(bFloat + d, 1.0)
+    return [UIColor colorWithRed:MIN(rFloat + d, 1.0f)
+                           green:MIN(gFloat + d, 1.0f)
+                            blue:MIN(bFloat + d, 1.0f)
                            alpha:1.0];
 }
 
@@ -307,9 +308,9 @@ static CGFloat edgeSizeFromCornerRadius(CGFloat cornerRadius) {
     CGFloat rFloat, gFloat, bFloat, aFloat;
     [self getValueOfRed:&rFloat green:&gFloat blue:&bFloat alpha:&aFloat];
     
-    return [UIColor colorWithRed:MAX(rFloat - d, 0.0)
-                           green:MAX(gFloat - d, 0.0)
-                            blue:MAX(bFloat - d, 0.0)
+    return [UIColor colorWithRed:MAX(rFloat - d, 0.0f)
+                           green:MAX(gFloat - d, 0.0f)
+                            blue:MAX(bFloat - d, 0.0f)
                            alpha:1.0];
 }
 
@@ -659,7 +660,7 @@ static CGFloat edgeSizeFromCornerRadius(CGFloat cornerRadius) {
             appearance.innerShadowOffset = CGSizeZero;
             appearance.innerCornerRadius = 0;
             appearance.viewContentInsets = UIEdgeInsetsZero;
-            appearance.overlayColor = [UIColor colorWithWhite:1 alpha:0.10];
+            appearance.overlayColor = [UIColor colorWithWhite:1 alpha:0.10f];
         }
     }
 }
@@ -717,7 +718,7 @@ static CGFloat edgeSizeFromCornerRadius(CGFloat cornerRadius) {
         
         CGRect outerRect = [self outerRect];
         
-        CGFloat delta = self.arrowBase / 2. + .5;
+        CGFloat delta = self.arrowBase / 2.0f + 0.5f;
         
         delta  += MIN(minOuterCornerRadius, outerCornerRadius);
         
@@ -868,7 +869,7 @@ static CGFloat edgeSizeFromCornerRadius(CGFloat cornerRadius) {
         
         if (result == nil)
         {
-            result = [self.fillTopColor colorByDarken:0.6];
+            result = [self.fillTopColor colorByDarken:0.6f];
         }
     }
     
@@ -885,7 +886,7 @@ static CGFloat edgeSizeFromCornerRadius(CGFloat cornerRadius) {
         
         if (result == nil)
         {
-            result = [self.fillTopColor colorByDarken:0.6];
+            result = [self.fillTopColor colorByDarken:0.6f];
         }
     }
     
@@ -898,7 +899,7 @@ static CGFloat edgeSizeFromCornerRadius(CGFloat cornerRadius) {
     
     if (result == nil)
     {
-        result = [self.fillTopColor colorByLighten:0.2];
+        result = [self.fillTopColor colorByLighten:0.2f];
     }
     
     return result;
@@ -929,7 +930,7 @@ static CGFloat edgeSizeFromCornerRadius(CGFloat cornerRadius) {
     
     if (result == nil)
     {
-        result = (WY_IS_IOS_LESS_THAN(@"7.0")) ? [self.fillTopColor colorByDarken:0.4] : self.fillTopColor;
+        result = (WY_IS_IOS_LESS_THAN(@"7.0")) ? [self.fillTopColor colorByDarken:0.4f] : self.fillTopColor;
     }
     
     return result;
@@ -939,9 +940,9 @@ static CGFloat edgeSizeFromCornerRadius(CGFloat cornerRadius) {
 {
     BOOL isUI7 = (WY_IS_IOS_LESS_THAN(@"7.0") == NO);
     
-    CGFloat r = ((isUI7) ? 244. : 55.) / 255.;
-    CGFloat g = ((isUI7) ? 244. : 63.) / 255.;
-    CGFloat b = ((isUI7) ? 244. : 71.) / 255.;
+    CGFloat r = ((isUI7) ? 244.f : 55.f) / 255.f;
+    CGFloat g = ((isUI7) ? 244.f : 63.f) / 255.f;
+    CGFloat b = ((isUI7) ? 244.f : 71.f) / 255.f;
     
     UIColor* result = [UIColor colorWithRed:r green:g blue:b alpha:1];
     return result;
@@ -1137,15 +1138,15 @@ static CGFloat edgeSizeFromCornerRadius(CGFloat cornerRadius) {
         
         CGContextSaveGState(context);
         {
-            CGFloat xOffset = glossShadowOffset.width + round(outerRectBorderRect.size.width);
+            CGFloat xOffset = glossShadowOffset.width + (CGFloat)round(outerRectBorderRect.size.width);
             CGFloat yOffset = glossShadowOffset.height;
             CGContextSetShadowWithColor(context,
-                                        CGSizeMake(xOffset + copysign(0.1, xOffset), yOffset + copysign(0.1, yOffset)),
+                                        CGSizeMake(xOffset + (CGFloat)copysign(0.1f, xOffset), yOffset + (CGFloat)copysign(0.1f, yOffset)),
                                         glossShadowBlurRadius,
                                         self.glossShadowColor.CGColor);
             
             [outerRectPath addClip];
-            CGAffineTransform transform = CGAffineTransformMakeTranslation(-round(outerRectBorderRect.size.width), 0);
+            CGAffineTransform transform = CGAffineTransformMakeTranslation((CGFloat)-round(outerRectBorderRect.size.width), 0);
             [outerRectNegativePath applyTransform: transform];
             [[UIColor grayColor] setFill];
             [outerRectNegativePath fill];
@@ -1403,9 +1404,9 @@ static CGFloat edgeSizeFromCornerRadius(CGFloat cornerRadius) {
     {
         NSUInteger lastIndex = count - 1;
         
-        for (NSInteger i = lastIndex; i >= 0; i--)
+        for (NSInteger i = (NSInteger)lastIndex; i >= 0; i--)
         {
-            UIView *view = [keyWindow.subviews objectAtIndex:i];
+            UIView *view = [keyWindow.subviews objectAtIndex:(NSUInteger)i];
             
             //WY_LOG(@"rootView.subview[%i] = %@", i, view);
             
@@ -1628,15 +1629,18 @@ static CGFloat edgeSizeFromCornerRadius(CGFloat cornerRadius) {
             containerView.transform = transform;
         }
         
+		UIView *viewToAnimate = overlayView;
+		UIView *containerToAnimate = containerView;
+		UIViewController *viewControllerToReveal = viewController;
         [UIView animateWithDuration:WY_POPOVER_DEFAULT_ANIMATION_DURATION animations:^{
-            overlayView.alpha = 1;
-            overlayView.transform = CGAffineTransformIdentity;
-            containerView.alpha = 1;
-            containerView.transform = CGAffineTransformIdentity;
+            viewToAnimate.alpha = 1;
+            viewToAnimate.transform = CGAffineTransformIdentity;
+            containerToAnimate.alpha = 1;
+            containerToAnimate.transform = CGAffineTransformIdentity;
         } completion:^(BOOL finished) {
-            if ([viewController isKindOfClass:[UINavigationController class]] == NO)
+            if ([viewControllerToReveal isKindOfClass:[UINavigationController class]] == NO)
             {
-                [viewController viewDidAppear:YES];
+                [viewControllerToReveal viewDidAppear:YES];
             }
         }];
     }
@@ -2029,34 +2033,39 @@ static CGFloat edgeSizeFromCornerRadius(CGFloat cornerRadius) {
     if (overlayView == nil) return;
     
     void (^completionBlock)(BOOL);
-          
+
+	__block UIView *viewToAnimate = overlayView;
+	__block UIView *containerToAnimate = containerView;
+	__block UIViewController *viewControllerToHide = viewController;
+	__block id<WYPopoverControllerDelegate> animationDelegate = delegate;
+	__weak typeof(self) weakSelf;
+	
     completionBlock = ^(BOOL finished) {
-        
         if (aAnimated)
         {
-            [UIView animateWithDuration:WY_POPOVER_DEFAULT_ANIMATION_DURATION animations:^{
-                overlayView.alpha = 0;
-            } completion:^(BOOL finished) {
-                [overlayView removeFromSuperview];
-                overlayView = nil;
+			[UIView animateWithDuration:WY_POPOVER_DEFAULT_ANIMATION_DURATION animations:^{
+                viewToAnimate.alpha = 0;
+            } completion:^(BOOL fadeAnimationFinished) {
+                [viewToAnimate removeFromSuperview];
+                viewToAnimate = nil;
             }];
         }
         else
         {
-            [overlayView removeFromSuperview];
-            overlayView = nil;
+            [viewToAnimate removeFromSuperview];
+            viewToAnimate = nil;
         }
         
-        if ([viewController isKindOfClass:[UINavigationController class]] == NO)
+        if ([viewControllerToHide isKindOfClass:[UINavigationController class]] == NO)
         {
-            [viewController viewDidDisappear:aAnimated];
+            [viewControllerToHide viewDidDisappear:aAnimated];
         }
         
         if (callDelegate)
         {
-            if (delegate && [delegate respondsToSelector:@selector(popoverControllerDidDismissPopover:)])
+            if (animationDelegate && [animationDelegate respondsToSelector:@selector(popoverControllerDidDismissPopover:)])
             {
-                [delegate popoverControllerDidDismissPopover:self];
+                [animationDelegate popoverControllerDidDismissPopover:weakSelf];
             }
         }
     };
@@ -2083,15 +2092,15 @@ static CGFloat edgeSizeFromCornerRadius(CGFloat cornerRadius) {
                                                       object:nil];
     }
     
-    if ([viewController isKindOfClass:[UINavigationController class]] == NO)
+    if ([viewControllerToHide isKindOfClass:[UINavigationController class]] == NO)
     {
-        [viewController viewWillDisappear:aAnimated];
+        [viewControllerToHide viewWillDisappear:aAnimated];
     }
     
     if (aAnimated)
     {
         [UIView animateWithDuration:WY_POPOVER_DEFAULT_ANIMATION_DURATION animations:^{
-            containerView.alpha = 0;
+            containerToAnimate.alpha = 0;
         } completion:^(BOOL finished) {
             completionBlock(finished);
         }];
