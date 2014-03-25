@@ -168,8 +168,8 @@ static char const * const UINavigationControllerEmbedInPopoverTagKey = "UINaviga
     
     if (areaSize.width > 0 && areaSize.height > 0)
     {
-        CGFloat w1 = ceilf(areaSize.width / 10.0f);
-        CGFloat h1 = ceilf(areaSize.height / 10.0f);
+        CGFloat w1 = (CGFloat)ceil(areaSize.width / 10.0f);
+        CGFloat h1 = (CGFloat)ceil(areaSize.height / 10.0f);
         
         result = (w1 * h1);
     }
@@ -1684,8 +1684,10 @@ static CGFloat edgeSizeFromCornerRadius(CGFloat cornerRadius) {
                                animated:(BOOL)aAnimated
                                 options:(WYPopoverAnimationOptions)aOptions
 {
-    barButtonItem = item;
-    UIView *itemView = [barButtonItem valueForKey:@"view"];
+	barButtonItem = item;
+	UIBarButtonItem *strongBarButtonItem = barButtonItem;
+	
+	UIView *itemView = [strongBarButtonItem valueForKey:@"view"];
     arrowDirections = WYPopoverArrowDirectionDown | WYPopoverArrowDirectionUp;
     [self presentPopoverFromRect:itemView.bounds
                           inView:itemView
@@ -2115,15 +2117,17 @@ static CGFloat edgeSizeFromCornerRadius(CGFloat cornerRadius) {
 
 - (void)popoverOverlayView:(WYPopoverOverlayView*)aOverlayView didTouchAtPoint:(CGPoint)aPoint
 {
+	id<WYPopoverControllerDelegate> strongDelegate = delegate;
+	
     BOOL isTouched = [containerView isTouchedAtPoint:[containerView convertPoint:aPoint fromView:aOverlayView]];
     
     if (!isTouched)
     {
         BOOL shouldDismiss = !viewController.modalInPopover;
         
-        if (shouldDismiss && delegate && [delegate respondsToSelector:@selector(popoverControllerShouldDismissPopover:)])
+        if (shouldDismiss && strongDelegate && [strongDelegate respondsToSelector:@selector(popoverControllerShouldDismissPopover:)])
         {
-            shouldDismiss = [delegate popoverControllerShouldDismissPopover:self];
+            shouldDismiss = [strongDelegate popoverControllerShouldDismissPopover:self];
         }
         
         if (shouldDismiss)
@@ -2362,7 +2366,10 @@ static CGFloat GetStatusBarHeight() {
 
 - (void)didChangeDeviceOrientation:(NSNotification*)notification
 {
-    if (isInterfaceOrientationChanging == NO) return;
+    UIBarButtonItem *strongBarButtonItem = barButtonItem;
+	id<WYPopoverControllerDelegate> strongDelegate = self.delegate;
+	
+	if (isInterfaceOrientationChanging == NO) return;
     
     isInterfaceOrientationChanging = NO;
     
@@ -2377,17 +2384,17 @@ static CGFloat GetStatusBarHeight() {
         }
     }
     
-    if (barButtonItem)
+    if (strongBarButtonItem)
     {
-        inView = [barButtonItem valueForKey:@"view"];
+        inView = [strongBarButtonItem valueForKey:@"view"];
         rect = inView.bounds;
     }
-    else if ([delegate respondsToSelector:@selector(popoverController:willRepositionPopoverToRect:inView:)])
+    else if ([strongDelegate respondsToSelector:@selector(popoverController:willRepositionPopoverToRect:inView:)])
     {
         CGRect anotherRect;
         UIView *anotherInView;
         
-        [delegate popoverController:self willRepositionPopoverToRect:&anotherRect inView:&anotherInView];
+        [strongDelegate popoverController:self willRepositionPopoverToRect:&anotherRect inView:&anotherInView];
         
         if (&anotherRect != NULL)
         {
