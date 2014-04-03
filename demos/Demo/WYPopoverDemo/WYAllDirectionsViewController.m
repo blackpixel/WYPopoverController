@@ -12,8 +12,8 @@
 
 @interface WYAllDirectionsViewController () <WYPopoverControllerDelegate>
 {
-    WYPopoverController* anotherPopoverController;
-    WYPopoverController* settingsPopoverController;
+    WYPopoverController *anotherPopoverController;
+    WYPopoverController *settingsPopoverController;
 }
 
 - (IBAction)open:(id)sender;
@@ -65,9 +65,27 @@
 
 - (void)close:(id)sender
 {
-    [settingsPopoverController dismissPopoverAnimated:YES];
-    settingsPopoverController.delegate = nil;
-    settingsPopoverController = nil;
+    [settingsPopoverController dismissPopoverAnimated:YES completion:^{
+        [self popoverControllerDidDismissPopover:settingsPopoverController];
+    }];
+}
+
+- (void)change:(id)sender
+{
+    // Change popover content size
+    
+    //[settingsPopoverController setPopoverContentSize:CGSizeMake(320, 480)];
+    
+    // Change complete theme
+    
+    //settingsPopoverController.theme = [WYPopoverTheme themeForIOS6];
+    
+    //
+    
+    [settingsPopoverController beginThemeUpdates];
+        settingsPopoverController.theme.arrowHeight = 13;
+        settingsPopoverController.theme.arrowBase = 25;
+    [settingsPopoverController endThemeUpdates];
 }
 
 - (IBAction)showmodal:(id)sender
@@ -83,23 +101,20 @@
 {
     if (settingsPopoverController == nil)
     {
-        UIView *btn = (UIView*)sender;
+        UIView *btn = (UIView *)sender;
         
         WYSettingsViewController *settingsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"WYSettingsViewController"];
-        
-        if ([settingsViewController respondsToSelector:@selector(setPreferredContentSize:)]) {
-            settingsViewController.preferredContentSize = CGSizeMake(280, 200);             // iOS 7
-        }
-        else {
-            settingsViewController.contentSizeForViewInPopover = CGSizeMake(280, 200);      // iOS < 7
-        }
+        settingsViewController.preferredContentSize = CGSizeMake(320, 280);
         
         settingsViewController.title = @"Settings";
+        
+        [settingsViewController.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"change" style:UIBarButtonItemStylePlain target:self action:@selector(change:)]];
+        
         [settingsViewController.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(close:)]];
         
         settingsViewController.modalInPopover = NO;
         
-        UINavigationController* contentViewController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
+        UINavigationController *contentViewController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
         
         settingsPopoverController = [[WYPopoverController alloc] initWithContentViewController:contentViewController];
         settingsPopoverController.delegate = self;
@@ -124,12 +139,20 @@
     if ([segue.identifier isEqualToString:@"AnotherPopoverSegue"])
     {
         WYStoryboardPopoverSegue *popoverSegue = (WYStoryboardPopoverSegue *)segue;
-        anotherPopoverController = [popoverSegue popoverControllerWithSender:sender permittedArrowDirections:WYPopoverArrowDirectionAny animated:YES];
+        anotherPopoverController = [popoverSegue popoverControllerWithSender:sender
+                                                    permittedArrowDirections:WYPopoverArrowDirectionDown
+                                                                    animated:YES
+                                                                     options:WYPopoverAnimationOptionFadeWithScale];
         anotherPopoverController.delegate = self;
     }
 }
 
 #pragma mark - WYPopoverControllerDelegate
+
+- (void)popoverControllerDidPresentPopover:(WYPopoverController *)controller
+{
+    NSLog(@"popoverControllerDidPresentPopover");
+}
 
 - (BOOL)popoverControllerShouldDismissPopover:(WYPopoverController *)controller
 {
@@ -148,6 +171,17 @@
         settingsPopoverController.delegate = nil;
         settingsPopoverController = nil;
     }
+}
+
+- (BOOL)popoverControllerShouldIgnoreKeyboardBounds:(WYPopoverController *)popoverController
+{
+    return YES;
+}
+
+- (void)popoverController:(WYPopoverController *)popoverController willTranslatePopoverWithYOffset:(float *)value
+{
+    // keyboard is shown and the popover will be moved up by 163 pixels for example ( *value = 163 )
+    *value = 0; // set value to 0 if you want to avoid the popover to be moved
 }
 
 #pragma mark - UIViewControllerRotation

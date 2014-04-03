@@ -15,40 +15,42 @@ WYPopoverController is for the presentation of content in popover on iPhone / iP
 
 * UIAppearance support
 * Works like UIPopoverController
+* Works also with blocks
 * Animation options
 * Automatic orientation support
 * UIStoryboard support
-* ~~Keyboard show / hide support~~ (still in progress)
+* Keyboard show / hide support
 * iOS 6 & 7 support
+* UIAccessibility support
+* Theme support
 
 ### UIAppearance support
 
 ---
 
-| Property                                                           | Type           | Default value (iOS 6)  | Default value (iOS 7)  |
-| ------------------------------------------------------------------ | -------------- | ---------------------: | ---------------------: |
-| tintColor                                                          | `UIColor`      |                  *nil* |                  *nil* |
-| arrowBase                                                          | `CGFloat`      |                     42 |                     25 |
-| arrowHeight                                                        | `CGFloat`      |                     18 |                     13 |
-| borderWidth                                                        | `CGFloat`      |                      6 |                      0 |
-| outerCornerRadius                                                  | `CGFloat`      |                      8 |                      5 |
-| innerCornerRadius                                                  | `CGFloat`      |                      6 |                      0 |
-| viewContentInsets                                                  | `UIEdgeInsets` |         { 3, 0, 0, 0 } |       UIEdgeInsetsZero |
-| fillTopColor                                                       | `UIColor`      | 	         #373f47ff | 	          #f4f4f4ff |
-| fillBottomColor                                                    | `UIColor`      |              #3b434cff |              #f4f4f4ff |
-| glossShadowColor                                                   | `UIColor`      |              #c3c5c77f |           #transparent |
-| glossShadowBlurRadius                                              | `CGFloat`      |                      0 |                      0 |
-| glossShadowOffset                                                  | `CGSize`       |             { 0, 1.5 } |             CGSizeZero |
-| outerShadowColor                                                   | `UIColor`      |              #000000bf |           #transparent |
-| outerShadowBlurRadius                                              | `CGFloat`      |                      8 |                      0 |
-| outerShadowOffset                                                  | `CGSize`       |               { 0, 2 } |             CGSizeZero |
-| innerShadowColor                                                   | `UIColor`      | 			 #000000bf | 		   #transparent |
-| innerShadowBlurRadius                                              | `CGFloat`      |                      2 |                      0 |
-| innerShadowOffset                                                  | `CGSize`       |               { 0, 1 } |             CGSizeZero |
-| strokeColor          ![](screenshots/wypopover_deprecated_ico.png) | `UIColor`      |              #262c31ff |                  *nil* |
-| minOuterCornerRadius ![](screenshots/wypopover_new_ico.png)        | `CGFloat`      |  		             0 |  		              0 |
-| innerStrokeColor     ![](screenshots/wypopover_new_ico.png) 		 | `UIColor`      |              #262c31ff |           #transparent |
-| outerStrokeColor     ![](screenshots/wypopover_new_ico.png) 		 | `UIColor`      |              #262c31ff |           #transparent |
+| Property                      | Type           | Default value (iOS 6)  | Default value (iOS 7)  |
+| ----------------------------- | -------------- | ---------------------: | ---------------------: |
+| tintColor                     | `UIColor`      |                  *nil* |                  *nil* |
+| arrowBase                     | `NSUInteger`   |                     42 |                     25 |
+| arrowHeight                   | `NSUInteger`   |                     18 |                     13 |
+| borderWidth                   | `NSUInteger`   |                      6 |                      0 |
+| outerCornerRadius             | `NSUInteger`   |                      8 |                      5 |
+| innerCornerRadius             | `NSUInteger`   |                      6 |                      0 |
+| viewContentInsets             | `UIEdgeInsets` |         { 3, 0, 0, 0 } |       UIEdgeInsetsZero |
+| fillTopColor                  | `UIColor`      | 	            #373f47ff | 	         #f4f4f4ff |
+| fillBottomColor               | `UIColor`      |              #3b434cff |              #f4f4f4ff |
+| glossShadowColor              | `UIColor`      |              #c3c5c77f |           #transparent |
+| glossShadowBlurRadius         | `NSUInteger`   |                      0 |                      0 |
+| glossShadowOffset             | `CGSize`       |             { 0, 1.5 } |             CGSizeZero |
+| outerShadowColor              | `UIColor`      |              #000000bf |           #transparent |
+| outerShadowBlurRadius         | `NSUInteger`   |                      8 |                      0 |
+| outerShadowOffset             | `CGSize`       |               { 0, 2 } |             CGSizeZero |
+| innerShadowColor              | `UIColor`      | 			    #000000bf | 		  #transparent |
+| innerShadowBlurRadius         | `NSUInteger`   |                      2 |                      0 |
+| innerShadowOffset             | `CGSize`       |               { 0, 1 } |             CGSizeZero |
+| minOuterCornerRadius          | `NSUInteger`   |  		            0 |  		             0 |
+| innerStrokeColor              | `UIColor`      |              #262c31ff |           #transparent |
+| outerStrokeColor              | `UIColor`      |              #262c31ff |           #transparent |
 
 ##### Arrow & Border
 
@@ -60,7 +62,7 @@ WYPopoverController is for the presentation of content in popover on iPhone / iP
 
 ##### Stroke & Fill
 
-![](https://raw.github.com/nicolaschengdev/WYPopoverController/master/screenshots/appearance/small/wypopover_strokecolor.png "strokeColor: #c3045e DEPRECATED in [0.1.3]. Use 'outerStrokeColor' instead.") , ![](https://raw.github.com/nicolaschengdev/WYPopoverController/master/screenshots/appearance/small/wypopover_innerstrokecolor.png "innerStrokeColor: #c3045e") , ![](https://raw.github.com/nicolaschengdev/WYPopoverController/master/screenshots/appearance/small/wypopover_outerstrokecolor.png "outerStrokeColor: #c3045e") , ![](https://raw.github.com/nicolaschengdev/WYPopoverController/master/screenshots/appearance/small/wypopover_filltopcolor.png "fillTopColor: #c3045e") , ![](https://raw.github.com/nicolaschengdev/WYPopoverController/master/screenshots/appearance/small/wypopover_fillbottomcolor.png "fillBottomColor: #c3045e")
+![](https://raw.github.com/nicolaschengdev/WYPopoverController/master/screenshots/appearance/small/wypopover_innerstrokecolor.png "innerStrokeColor: #c3045e") , ![](https://raw.github.com/nicolaschengdev/WYPopoverController/master/screenshots/appearance/small/wypopover_outerstrokecolor.png "outerStrokeColor: #c3045e") , ![](https://raw.github.com/nicolaschengdev/WYPopoverController/master/screenshots/appearance/small/wypopover_filltopcolor.png "fillTopColor: #c3045e") , ![](https://raw.github.com/nicolaschengdev/WYPopoverController/master/screenshots/appearance/small/wypopover_fillbottomcolor.png "fillBottomColor: #c3045e")
 
 ##### Gloss
 
@@ -94,16 +96,35 @@ Determines whether the default content appearance should be used for the popover
 
 The margins that define the portion of the screen in which it is permissible to display the popover.
 
+### Works also with blocks
+
+---
+
+A block object can be executed when animation sequences ends. This parameter may be `nil`.
+
+**Important :** If a block object is defined then correspondent delegate methods is not called.
+
+#### Example
+
+```objective-c
+
+popover = [[WYPopoverController alloc] initWithContentViewController:contentViewController];
+[popover presentPopoverAsDialogAnimated:YES
+                             completion:^{
+                                 // Code executed after popover presentation animation sequence ends
+                             }];
+```
+
 ### Animation options
 
 ---
 
-Introduced in release 0.1.7, there are 3 styles of animation :
+There are 3 styles of animation :
 * Fade *(by default)*
 * Scale
 * Fade with Scale
 
-#### Examples
+#### Example
 
 ```objective-c
 
@@ -129,13 +150,13 @@ WYPopoverController uses ARC.
 
 #### Cocoapods
 
-Add this line `pod 'WYPopoverController', '~> 0.1.7'` to your PodFile.
+Add this line `pod 'WYPopoverController', '~> 0.2.0'` to your PodFile.
 
 Your PodFile should look like :
 
 ```Ruby
 platform :ios, '6.0'
-pod 'WYPopoverController', '~> 0.1.7'
+pod 'WYPopoverController', '~> 0.2.2'
 ```
 
 To use the `master` branch of the repo :
@@ -199,16 +220,20 @@ In the implementation of your view controller
 ##### Appearance (Tint Color)
 
 ```objective-c
-WYPopoverBackgroundView* appearance = [WYPopoverBackgroundView appearance];
+[WYPopoverController setDefaultTheme:[WYPopoverTheme theme]];
+
+WYPopoverBackgroundView *appearance = [WYPopoverBackgroundView appearance];
 [appearance setTintColor:[UIColor orangeColor]];
 ```
 
 ##### Appearance (Flat Popover)
 
 ```objective-c
-UIColor* greenColor = [UIColor colorWithRed:26.f/255.f green:188.f/255.f blue:156.f/255.f alpha:1];
+UIColor *greenColor = [UIColor colorWithRed:26.f/255.f green:188.f/255.f blue:156.f/255.f alpha:1];
 
-WYPopoverBackgroundView* popoverAppearance = [WYPopoverBackgroundView appearance];
+[WYPopoverController setDefaultTheme:[WYPopoverTheme theme]];
+
+WYPopoverBackgroundView *popoverAppearance = [WYPopoverBackgroundView appearance];
         
 [popoverAppearance setOuterCornerRadius:4];
 [popoverAppearance setOuterShadowBlurRadius:0];
@@ -254,6 +279,36 @@ UINavigationBar* navBarInPopoverAppearance = [UINavigationBar appearanceWhenCont
         popoverController = [popoverSegue popoverControllerWithSender:sender permittedArrowDirections:WYPopoverArrowDirectionAny animated:YES];
         popoverController.delegate = self;
 	}
+}
+```
+
+##### Theme
+
+Introduced in 0.2.1 release, you can change appearance of your popovers with themes.
+
+```objective-c
+- (void)changePopoverTheme
+{
+    popover.theme = [WYPopoverTheme themeForIOS6];  // you set a new theme
+
+    // use beginThemeUpdates and endThemeUpdates methods if you have to change several values which compose your current theme
+    
+    [popover beginThemeUpdates];
+        popover.theme.arrowHeight = 30;
+        popover.theme.arrowBase = 40;
+    [popover endThemeUpdates];
+}
+```
+
+##### Keyboard
+
+By default, when keyboard is shown, popover will be repositionned if it is (partially) hidden.
+Introduced in 0.2.1 release, you can control value of y offset when keyboard is shown with the following `delegate` method :
+
+```objective-c
+- (void)popoverController:(WYPopoverController *)popoverController willTranslatePopoverWithYOffset:(CGFloat *)value
+{
+    *value = 0; // if value is setted to 0 then popover will not be translated
 }
 ```
 
