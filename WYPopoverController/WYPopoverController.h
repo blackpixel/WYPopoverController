@@ -102,7 +102,7 @@ typedef NS_OPTIONS(NSUInteger, WYPopoverAnimationOptions) {
 @property (nonatomic, readonly, getter=isPopoverVisible) BOOL   popoverVisible;
 @property (nonatomic, strong, readonly) UIViewController       *contentViewController;
 @property (nonatomic, assign) CGSize                            popoverContentSize;
-@property (nonatomic, assign) float                             animationDuration;
+@property (nonatomic, assign) CGFloat                             animationDuration;
 
 @property (nonatomic, strong) WYPopoverTheme                   *theme;
 
@@ -211,7 +211,7 @@ typedef NS_OPTIONS(NSUInteger, WYPopoverAnimationOptions) {
 
 - (BOOL)popoverControllerShouldIgnoreKeyboardBounds:(WYPopoverController *)popoverController;
 
-- (void)popoverController:(WYPopoverController *)popoverController willTranslatePopoverWithYOffset:(float *)value;
+- (void)popoverController:(WYPopoverController *)popoverController willTranslatePopoverWithYOffset:(CGFloat *)value;
 
 @end
 

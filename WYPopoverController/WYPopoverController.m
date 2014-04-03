@@ -53,8 +53,8 @@
 
 - (BOOL)getValueOfRed:(CGFloat *)red green:(CGFloat *)green blue:(CGFloat *)blue alpha:(CGFloat *)apha;
 - (NSString *)hexString;
-- (UIColor *)colorByLighten:(float)d;
-- (UIColor *)colorByDarken:(float)d;
+- (UIColor *)colorByLighten:(CGFloat)d;
+- (UIColor *)colorByDarken:(CGFloat)d;
 
 @end
 
@@ -107,7 +107,7 @@
     return [NSString stringWithFormat:@"#%02x%02x%02x%02x", r, g, b, a];
 }
 
-- (UIColor *)colorByLighten:(float)d
+- (UIColor *)colorByLighten:(CGFloat)d
 {
     CGFloat rFloat, gFloat, bFloat, aFloat;
     [self getValueOfRed:&rFloat green:&gFloat blue:&bFloat alpha:&aFloat];
@@ -118,7 +118,7 @@
                            alpha:1.0];
 }
 
-- (UIColor *)colorByDarken:(float)d
+- (UIColor *)colorByDarken:(CGFloat)d
 {
     CGFloat rFloat, gFloat, bFloat, aFloat;
     [self getValueOfRed:&rFloat green:&gFloat blue:&bFloat alpha:&aFloat];
@@ -334,7 +334,7 @@ static char const * const UINavigationControllerEmbedInPopoverTagKey = "UINaviga
 
 @property (nonatomic, assign) WYPopoverArrowDirection arrowDirection;
 @property (nonatomic, assign) CGSize areaSize;
-@property (nonatomic, assign, readonly) float value;
+@property (nonatomic, assign, readonly) CGFloat value;
 
 @end
 
@@ -377,9 +377,9 @@ static char const * const UINavigationControllerEmbedInPopoverTagKey = "UINaviga
     return [NSString stringWithFormat:@"%@ [ %f x %f ]", direction, areaSize.width, areaSize.height];
 }
 
-- (float)value
+- (CGFloat)value
 {
-    float result = 0;
+    CGFloat result = 0;
     
     if (areaSize.width > 0 && areaSize.height > 0)
     {
@@ -510,7 +510,7 @@ static char const * const UINavigationControllerEmbedInPopoverTagKey = "UINaviga
 
 - (NSUInteger)innerCornerRadius
 {
-    float result = innerCornerRadius;
+    CGFloat result = innerCornerRadius;
     
     if (borderWidth == 0)
     {
@@ -616,7 +616,7 @@ static char const * const UINavigationControllerEmbedInPopoverTagKey = "UINaviga
 
 @implementation UIImage (WYPopover)
 
-static float edgeSizeFromCornerRadius(float cornerRadius) {
+static CGFloat edgeSizeFromCornerRadius(CGFloat cornerRadius) {
     return cornerRadius * 2 + 1;
 }
 
@@ -626,9 +626,9 @@ static float edgeSizeFromCornerRadius(float cornerRadius) {
 }
 
 + (UIImage *)imageWithColor:(UIColor *)color
-               cornerRadius:(float)cornerRadius
+               cornerRadius:(CGFloat)cornerRadius
 {
-    float min = edgeSizeFromCornerRadius(cornerRadius);
+    CGFloat min = edgeSizeFromCornerRadius(cornerRadius);
     
     CGSize minSize = CGSizeMake(min, min);
     
@@ -637,7 +637,7 @@ static float edgeSizeFromCornerRadius(float cornerRadius) {
 
 + (UIImage *)imageWithColor:(UIColor *)color
                        size:(CGSize)aSize
-               cornerRadius:(float)cornerRadius
+               cornerRadius:(CGFloat)cornerRadius
 {
     CGRect rect = CGRectMake(0, 0, aSize.width, aSize.height);
     UIBezierPath *roundedRect = [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:cornerRadius];
@@ -662,17 +662,17 @@ static float edgeSizeFromCornerRadius(float cornerRadius) {
 
 @property (nonatomic, strong) UIColor *gradientTopColor;
 @property (nonatomic, strong) UIColor *gradientBottomColor;
-@property (nonatomic, assign) float  gradientHeight;
-@property (nonatomic, assign) float  gradientTopPosition;
+@property (nonatomic, assign) CGFloat  gradientHeight;
+@property (nonatomic, assign) CGFloat  gradientTopPosition;
 
 @property (nonatomic, strong) UIColor *innerShadowColor;
 @property (nonatomic, assign) CGSize   innerShadowOffset;
-@property (nonatomic, assign) float  innerShadowBlurRadius;
-@property (nonatomic, assign) float  innerCornerRadius;
+@property (nonatomic, assign) CGFloat  innerShadowBlurRadius;
+@property (nonatomic, assign) CGFloat  innerCornerRadius;
 
-@property (nonatomic, assign) float  navigationBarHeight;
+@property (nonatomic, assign) CGFloat  navigationBarHeight;
 @property (nonatomic, assign) BOOL     wantsDefaultContentAppearance;
-@property (nonatomic, assign) float  borderWidth;
+@property (nonatomic, assign) CGFloat  borderWidth;
 
 @end
 
@@ -725,8 +725,8 @@ static float edgeSizeFromCornerRadius(float cornerRadius) {
     CGGradientRef fillGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)fillGradientColors, fillGradientLocations);
     
     //// innerRect Drawing
-    float barHeight = (wantsDefaultContentAppearance == NO) ? navigationBarHeight : 0;
-    float cornerRadius = (wantsDefaultContentAppearance == NO) ? innerCornerRadius : 0;
+    CGFloat barHeight = (wantsDefaultContentAppearance == NO) ? navigationBarHeight : 0;
+    CGFloat cornerRadius = (wantsDefaultContentAppearance == NO) ? innerCornerRadius : 0;
     
     CGRect innerRect = CGRectMake(CGRectGetMinX(rect), CGRectGetMinY(rect) + barHeight, CGRectGetWidth(rect) , CGRectGetHeight(rect) - barHeight);
     
@@ -899,9 +899,9 @@ static float edgeSizeFromCornerRadius(float cornerRadius) {
 @property (nonatomic, assign) WYPopoverArrowDirection arrowDirection;
 
 @property (nonatomic, strong, readonly) UIView *contentView;
-@property (nonatomic, assign, readonly) float navigationBarHeight;
+@property (nonatomic, assign, readonly) CGFloat navigationBarHeight;
 @property (nonatomic, assign, readonly) UIEdgeInsets outerShadowInsets;
-@property (nonatomic, assign) float arrowOffset;
+@property (nonatomic, assign) CGFloat arrowOffset;
 @property (nonatomic, assign) BOOL wantsDefaultContentAppearance;
 
 @property (nonatomic, assign, getter = isAppearing) BOOL appearing;
@@ -1036,9 +1036,9 @@ static float edgeSizeFromCornerRadius(float cornerRadius) {
     return result;
 }
 
-- (void)setArrowOffset:(float)value
+- (void)setArrowOffset:(CGFloat)value
 {
-    float coef = 1;
+    CGFloat coef = 1;
     
     if (value != 0)
     {
@@ -1218,7 +1218,7 @@ static float edgeSizeFromCornerRadius(float cornerRadius) {
         
         CGPoint origin = CGPointZero;
         
-        float reducedOuterCornerRadius = 0;
+        CGFloat reducedOuterCornerRadius = 0;
         
         if (arrowDirection == WYPopoverArrowDirectionUp || arrowDirection == WYPopoverArrowDirectionDown)
         {
@@ -1566,12 +1566,12 @@ static float edgeSizeFromCornerRadius(float cornerRadius) {
 - (WYPopoverArrowDirection)arrowDirectionForRect:(CGRect)aRect
                                           inView:(UIView*)aView
                                      contentSize:(CGSize)aContentSize
-                                     arrowHeight:(float)aArrowHeight
+                                     arrowHeight:(CGFloat)aArrowHeight
                         permittedArrowDirections:(WYPopoverArrowDirection)aArrowDirections;
 
 - (CGSize)sizeForRect:(CGRect)aRect
                inView:(UIView *)aView
-          arrowHeight:(float)aArrowHeight
+          arrowHeight:(CGFloat)aArrowHeight
        arrowDirection:(WYPopoverArrowDirection)aArrowDirection;
 
 - (void)registerTheme;
@@ -2213,13 +2213,13 @@ static WYPopoverTheme *defaultTheme_ = nil;
     
     CGRect viewFrame;
     CGRect containerFrame = CGRectZero;
-    float minX, maxX, minY, maxY, offset = 0;
+    CGFloat minX, maxX, minY, maxY, offset = 0;
     CGSize containerViewSize = CGSizeZero;
     
-    float overlayWidth = UIInterfaceOrientationIsPortrait(orientation) ? overlayView.bounds.size.width : overlayView.bounds.size.height;
-    float overlayHeight = UIInterfaceOrientationIsPortrait(orientation) ? overlayView.bounds.size.height : overlayView.bounds.size.width;
+    CGFloat overlayWidth = UIInterfaceOrientationIsPortrait(orientation) ? overlayView.bounds.size.width : overlayView.bounds.size.height;
+    CGFloat overlayHeight = UIInterfaceOrientationIsPortrait(orientation) ? overlayView.bounds.size.height : overlayView.bounds.size.width;
     
-    float keyboardHeight = UIInterfaceOrientationIsPortrait(orientation) ? keyboardRect.size.height : keyboardRect.size.width;
+    CGFloat keyboardHeight = UIInterfaceOrientationIsPortrait(orientation) ? keyboardRect.size.height : keyboardRect.size.width;
     
 	id strongDelegate = self.delegate;
     if (strongDelegate && [strongDelegate respondsToSelector:@selector(popoverControllerShouldIgnoreKeyboardBounds:)]) {
@@ -2489,9 +2489,9 @@ static WYPopoverTheme *defaultTheme_ = nil;
     //
     if (keyboardHeight > 0) {
         
-        float keyboardY = UIInterfaceOrientationIsPortrait(orientation) ? keyboardRect.origin.y : keyboardRect.origin.x;
+        CGFloat keyboardY = UIInterfaceOrientationIsPortrait(orientation) ? keyboardRect.origin.y : keyboardRect.origin.x;
         
-        float yOffset = containerFrame.origin.y + containerFrame.size.height - keyboardY;
+        CGFloat yOffset = containerFrame.origin.y + containerFrame.size.height - keyboardY;
         
         if (yOffset > 0) {
             
@@ -2567,7 +2567,7 @@ static WYPopoverTheme *defaultTheme_ = nil;
                     completion:(void (^)(void))completion
                   callDelegate:(BOOL)callDelegate
 {
-    float duration = self.animationDuration;
+    CGFloat duration = self.animationDuration;
     WYPopoverAnimationOptions style = aOptions;
     
     __weak __typeof__(self) weakSelf = self;
@@ -2752,7 +2752,7 @@ static WYPopoverTheme *defaultTheme_ = nil;
 - (WYPopoverArrowDirection)arrowDirectionForRect:(CGRect)aRect
                                           inView:(UIView *)aView
                                      contentSize:(CGSize)contentSize
-                                     arrowHeight:(float)arrowHeight
+                                     arrowHeight:(CGFloat)arrowHeight
                         permittedArrowDirections:(WYPopoverArrowDirection)arrowDirections
 {
     WYPopoverArrowDirection arrowDirection = WYPopoverArrowDirectionUnknown;
@@ -2817,8 +2817,8 @@ static WYPopoverTheme *defaultTheme_ = nil;
         WYPopoverArea *area1 = (WYPopoverArea *)obj1;
         WYPopoverArea *area2 = (WYPopoverArea *)obj2;
         
-        float val1 = area1.value;
-        float val2 = area2.value;
+        CGFloat val1 = area1.value;
+        CGFloat val2 = area2.value;
         
         NSComparisonResult result = NSOrderedSame;
         
@@ -2877,7 +2877,7 @@ static WYPopoverTheme *defaultTheme_ = nil;
 
 - (CGSize)sizeForRect:(CGRect)aRect
                inView:(UIView *)aView
-          arrowHeight:(float)arrowHeight
+          arrowHeight:(CGFloat)arrowHeight
        arrowDirection:(WYPopoverArrowDirection)arrowDirection
 {
 	__typeof(self.delegate) strongDelegate = self.delegate;
@@ -2886,9 +2886,9 @@ static WYPopoverTheme *defaultTheme_ = nil;
     CGRect viewFrame = [aView convertRect:aRect toView:nil];
     viewFrame = WYRectInWindowBounds(viewFrame, orientation);
     
-    float minX, maxX, minY, maxY = 0;
+    CGFloat minX, maxX, minY, maxY = 0;
     
-    float keyboardHeight = UIInterfaceOrientationIsPortrait(orientation) ? keyboardRect.size.height : keyboardRect.size.width;
+    CGFloat keyboardHeight = UIInterfaceOrientationIsPortrait(orientation) ? keyboardRect.size.height : keyboardRect.size.width;
     
     if (strongDelegate && [strongDelegate respondsToSelector:@selector(popoverControllerShouldIgnoreKeyboardBounds:)]) {
         BOOL shouldIgnore = [strongDelegate popoverControllerShouldIgnoreKeyboardBounds:self];
@@ -2898,9 +2898,9 @@ static WYPopoverTheme *defaultTheme_ = nil;
         }
     }
     
-    float overlayWidth = UIInterfaceOrientationIsPortrait(orientation) ? overlayView.bounds.size.width : overlayView.bounds.size.height;
+    CGFloat overlayWidth = UIInterfaceOrientationIsPortrait(orientation) ? overlayView.bounds.size.width : overlayView.bounds.size.height;
     
-    float overlayHeight = UIInterfaceOrientationIsPortrait(orientation) ? overlayView.bounds.size.height : overlayView.bounds.size.width;
+    CGFloat overlayHeight = UIInterfaceOrientationIsPortrait(orientation) ? overlayView.bounds.size.height : overlayView.bounds.size.width;
     
     minX = popoverLayoutMargins.left;
     maxX = overlayWidth - popoverLayoutMargins.right;
@@ -2967,10 +2967,10 @@ static WYPopoverTheme *defaultTheme_ = nil;
 //    return result;
 //}
 
-static float WYStatusBarHeight() {
+static CGFloat WYStatusBarHeight() {
     UIInterfaceOrientation orienation = [[UIApplication sharedApplication] statusBarOrientation];
     
-    float statusBarHeight = 0;
+    CGFloat statusBarHeight = 0;
     {
         CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
         statusBarHeight = statusBarFrame.size.height;
@@ -2984,7 +2984,7 @@ static float WYStatusBarHeight() {
     return statusBarHeight;
 }
 
-static float WYInterfaceOrientationAngleOfOrientation(UIInterfaceOrientation orientation)
+static CGFloat WYInterfaceOrientationAngleOfOrientation(UIInterfaceOrientation orientation)
 {
     CGFloat angle;
     
@@ -3011,8 +3011,8 @@ static CGRect WYRectInWindowBounds(CGRect rect, UIInterfaceOrientation orientati
     
     UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
     
-    float windowWidth = keyWindow.bounds.size.width;
-    float windowHeight = keyWindow.bounds.size.height;
+    CGFloat windowWidth = keyWindow.bounds.size.width;
+    CGFloat windowHeight = keyWindow.bounds.size.height;
     
     CGRect result = rect;
     
@@ -3045,8 +3045,8 @@ static CGPoint WYPointRelativeToOrientation(CGPoint origin, CGSize size, UIInter
     
     UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
     
-    float windowWidth = keyWindow.bounds.size.width;
-    float windowHeight = keyWindow.bounds.size.height;
+    CGFloat windowWidth = keyWindow.bounds.size.width;
+    CGFloat windowHeight = keyWindow.bounds.size.height;
     
     CGPoint result = origin;
     
