@@ -33,7 +33,8 @@
 #endif
 
 #ifdef DEBUG
-#define WY_LOG(fmt, ...)		NSLog((@"%s (%d) : " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+//#define WY_LOG(fmt, ...)		NSLog((@"%s (%d) : " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+#define WY_LOG(...)
 #else
 #define WY_LOG(...)
 #endif
@@ -2663,14 +2664,14 @@ static WYPopoverTheme *defaultTheme_ = nil;
         [viewController viewWillDisappear:aAnimated];
     }
     
-//    @try {
-//        if ([viewController respondsToSelector:@selector(preferredContentSize)]) {
-//            [viewController removeObserver:self forKeyPath:NSStringFromSelector(@selector(preferredContentSize))];
-//        } else {
-//            [viewController removeObserver:self forKeyPath:NSStringFromSelector(@selector(contentSizeForViewInPopover))];
-//        }
-//    }
-//    @catch (NSException * __unused exception) {}
+    @try {
+        if ([viewController respondsToSelector:@selector(preferredContentSize)]) {
+            [viewController removeObserver:self forKeyPath:NSStringFromSelector(@selector(preferredContentSize))];
+        } else {
+            [viewController removeObserver:self forKeyPath:NSStringFromSelector(@selector(contentSizeForViewInPopover))];
+        }
+    }
+    @catch (NSException * __unused exception) {}
     
     if (aAnimated)
     {
