@@ -2010,7 +2010,7 @@ static WYPopoverTheme *defaultTheme_ = nil;
 		}];
 		
 		// We have to give two seconds of delay to prevent hidden it in VoiceOver.
-		[backgroundView performSelector:@selector(setAppearing:) withObject:NO afterDelay:(animationDuration + 2.0f)];
+		[backgroundView performSelector:@selector(setAppearing:) withObject:nil afterDelay:(animationDuration + 2.0f)];
     }
     else
     {
