@@ -990,26 +990,23 @@ static CGFloat edgeSizeFromCornerRadius(CGFloat cornerRadius) {
     return self;
 }
 
-/*
 - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event
 {
-    BOOL result = [super pointInside:point withEvent:event];
-    
-    if (self.isAppearing == NO)
+    if (self.isAppearing == NO && UIAccessibilityIsVoiceOverRunning())
     {
         BOOL isTouched = [self isTouchedAtPoint:point];
         
-        if (isTouched == NO && UIAccessibilityIsVoiceOverRunning())
+        if (isTouched == NO)
         {
-            UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, nil);
-            UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, NSLocalizedString(@"Double-tap to dismiss pop-up window.", nil));
-        }
+			if ([self.delegate respondsToSelector:@selector(popoverBackgroundViewDidTouchOutside:)])
+			{
+				[self.delegate popoverBackgroundViewDidTouchOutside:self];
+			}
+		}
     }
     
-    return result;
+    return [super pointInside:point withEvent:event];
 }
-*/
-
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
@@ -1914,15 +1911,16 @@ static WYPopoverTheme *defaultTheme_ = nil;
     {
         overlayView = [[WYPopoverOverlayView alloc] initWithFrame:inView.window.bounds];
         overlayView.autoresizesSubviews = NO;
-        overlayView.isAccessibilityElement = YES;
-        overlayView.accessibilityTraits = UIAccessibilityTraitNone;
+        //overlayView.isAccessibilityElement = YES;
+        //overlayView.accessibilityTraits = UIAccessibilityTraitNone;
         overlayView.delegate = self;
         overlayView.passthroughViews = passthroughViews;
         
         backgroundView = [[WYPopoverBackgroundView alloc] initWithContentSize:contentViewSize];
         backgroundView.appearing = YES;
-        backgroundView.isAccessibilityElement = YES;
-        backgroundView.accessibilityTraits = UIAccessibilityTraitNone;
+		backgroundView.accessibilityViewIsModal = YES;
+        //backgroundView.isAccessibilityElement = YES;
+        //backgroundView.accessibilityTraits = UIAccessibilityTraitNone;
         
         backgroundView.delegate = self;
         backgroundView.hidden = YES;
@@ -1954,8 +1952,6 @@ static WYPopoverTheme *defaultTheme_ = nil;
             {
                 [strongSelf->viewController addObserver:self forKeyPath:NSStringFromSelector(@selector(contentSizeForViewInPopover)) options:0 context:nil];
             }
-            
-            strongSelf->backgroundView.appearing = NO;
         }
         
         if (completion)
@@ -2011,7 +2007,10 @@ static WYPopoverTheme *defaultTheme_ = nil;
             }
         } completion:^(BOOL finished) {
             completionBlock(YES);
-        }];
+		}];
+		
+		// We have to give two seconds of delay to prevent hidden it in VoiceOver.
+		[backgroundView performSelector:@selector(setAppearing:) withObject:NO afterDelay:(animationDuration + 2.0f)];
     }
     else
     {
@@ -2519,10 +2518,11 @@ static WYPopoverTheme *defaultTheme_ = nil;
     if (aAnimated == YES) {
         backgroundView.frame = savedContainerFrame;
         __weak __typeof__(self) weakSelf = self;
+		
         [UIView animateWithDuration:0.10f animations:^{
-            __typeof__(self) strongSelf = weakSelf;
-            strongSelf->backgroundView.frame = containerFrame;
-        }];
+			__typeof__(self) strongSelf = weakSelf;
+			strongSelf->backgroundView.frame = containerFrame;
+		}];
     } else {
         backgroundView.frame = containerFrame;
     }
