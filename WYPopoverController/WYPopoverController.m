@@ -389,8 +389,8 @@ static char const * const UINavigationControllerEmbedInPopoverTagKey = "UINaviga
         
         result = (w1 * h1);
     }
-    
-    return result;
+    value = result;
+    return value;
 }
 
 @end
@@ -1031,7 +1031,8 @@ static CGFloat edgeSizeFromCornerRadius(CGFloat cornerRadius) {
     result.left -= self.outerShadowOffset.width;
     result.right += self.outerShadowOffset.width;
     
-    return result;
+	outerShadowInsets = result;
+    return outerShadowInsets;
 }
 
 - (void)setArrowOffset:(CGFloat)value
@@ -1785,7 +1786,8 @@ static WYPopoverTheme *defaultTheme_ = nil;
 - (BOOL)isPopoverVisible
 {
     BOOL result = (overlayView != nil);
-    return result;
+	popoverVisible = result;
+    return popoverVisible;
 }
 
 - (UIViewController *)contentViewController
