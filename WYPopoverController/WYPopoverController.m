@@ -1828,7 +1828,7 @@ static WYPopoverTheme *defaultTheme_ = nil;
         
         UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
         
-        result = CGSizeMake(320, UIDeviceOrientationIsLandscape(orientation) ? windowSize.width : windowSize.height);
+        result = CGSizeMake(320, UIInterfaceOrientationIsLandscape(orientation) ? windowSize.width : windowSize.height);
     }
     
     return result;
@@ -2140,7 +2140,7 @@ static WYPopoverTheme *defaultTheme_ = nil;
     
     if (backgroundView.arrowHeight > 0)
     {
-        if (UIDeviceOrientationIsLandscape(orientation)) {
+        if (UIInterfaceOrientationIsLandscape(orientation)) {
             containerViewSize.width = backgroundView.frame.size.height;
             containerViewSize.height = backgroundView.frame.size.width;
         }
@@ -2978,7 +2978,7 @@ static CGFloat WYStatusBarHeight() {
         CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
         statusBarHeight = statusBarFrame.size.height;
         
-        if (UIDeviceOrientationIsLandscape(orienation))
+        if (UIInterfaceOrientationIsLandscape(orienation))
         {
             statusBarHeight = statusBarFrame.size.width;
         }
@@ -3110,12 +3110,12 @@ static CGPoint WYPointRelativeToOrientation(CGPoint origin, CGSize size, UIInter
         
         [strongDelegate popoverController:self willRepositionPopoverToRect:&anotherRect inView:&anotherInView];
         
-        if (&anotherRect != NULL)
+        if (!CGRectIsNull(anotherRect))
         {
             rect = anotherRect;
         }
         
-        if (&anotherInView != NULL)
+        if (anotherInView != NULL)
         {
             inView = anotherInView;
         }
