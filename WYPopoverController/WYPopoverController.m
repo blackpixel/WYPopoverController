@@ -277,26 +277,26 @@ static char const * const UINavigationControllerEmbedInPopoverTagKey = "UINaviga
 
 @implementation UIViewController (WYPopover)
 
-+ (void)load
-{
-    Method original, swizzle;
-    
-#pragma clang diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated"
-    original = class_getInstanceMethod(self, @selector(setContentSizeForViewInPopover:));
-    swizzle = class_getInstanceMethod(self, @selector(sizzled_setContentSizeForViewInPopover:));
-    method_exchangeImplementations(original, swizzle);
-#pragma clang diagnostic pop
-    
-#ifdef WY_BASE_SDK_7_ENABLED
-    original = class_getInstanceMethod(self, @selector(setPreferredContentSize:));
-    swizzle = class_getInstanceMethod(self, @selector(sizzled_setPreferredContentSize:));
-    
-    if (original != NULL) {
-        method_exchangeImplementations(original, swizzle);
-    }
-#endif
-}
+//+ (void)load
+//{
+//    Method original, swizzle;
+//    
+//#pragma clang diagnostic push
+//#pragma GCC diagnostic ignored "-Wdeprecated"
+//    original = class_getInstanceMethod(self, @selector(setContentSizeForViewInPopover:));
+//    swizzle = class_getInstanceMethod(self, @selector(sizzled_setContentSizeForViewInPopover:));
+//    method_exchangeImplementations(original, swizzle);
+//#pragma clang diagnostic pop
+//    
+//#ifdef WY_BASE_SDK_7_ENABLED
+//    original = class_getInstanceMethod(self, @selector(setPreferredContentSize:));
+//    swizzle = class_getInstanceMethod(self, @selector(sizzled_setPreferredContentSize:));
+//    
+//    if (original != NULL) {
+//        method_exchangeImplementations(original, swizzle);
+//    }
+//#endif
+//}
 
 - (void)sizzled_setContentSizeForViewInPopover:(CGSize)aSize
 {
