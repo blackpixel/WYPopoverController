@@ -26,6 +26,7 @@
 #import "WYPopoverController.h"
 
 #import <objc/runtime.h>
+#import <tgmath.h>
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 70000
 #define WY_BASE_SDK_7_ENABLED
@@ -99,8 +100,8 @@ static CGRect _keyboardRect;
 
 - (BOOL)wy_getValueOfRed:(CGFloat *)red green:(CGFloat *)green blue:(CGFloat *)blue alpha:(CGFloat *)apha;
 - (NSString *)wy_hexString;
-- (UIColor *)wy_colorByLighten:(float)d;
-- (UIColor *)wy_colorByDarken:(float)d;
+- (UIColor *)wy_colorByLighten:(CGFloat)d;
+- (UIColor *)wy_colorByDarken:(CGFloat)d;
 
 @end
 
@@ -148,23 +149,23 @@ static CGRect _keyboardRect;
   return [NSString stringWithFormat:@"#%02x%02x%02x%02x", r, g, b, a];
 }
 
-- (UIColor *)wy_colorByLighten:(float)d {
+- (UIColor *)wy_colorByLighten:(CGFloat)d {
   CGFloat rFloat, gFloat, bFloat, aFloat;
   [self wy_getValueOfRed:&rFloat green:&gFloat blue:&bFloat alpha:&aFloat];
 
-  return [UIColor colorWithRed:MIN(rFloat + d, 1.0)
-                         green:MIN(gFloat + d, 1.0)
-                          blue:MIN(bFloat + d, 1.0)
+  return [UIColor colorWithRed:MIN(rFloat + d, 1.0f)
+                         green:MIN(gFloat + d, 1.0f)
+                          blue:MIN(bFloat + d, 1.0f)
                          alpha:1.0];
 }
 
-- (UIColor *)wy_colorByDarken:(float)d {
+- (UIColor *)wy_colorByDarken:(CGFloat)d {
   CGFloat rFloat, gFloat, bFloat, aFloat;
   [self wy_getValueOfRed:&rFloat green:&gFloat blue:&bFloat alpha:&aFloat];
 
-  return [UIColor colorWithRed:MAX(rFloat - d, 0.0)
-                         green:MAX(gFloat - d, 0.0)
-                          blue:MAX(bFloat - d, 0.0)
+  return [UIColor colorWithRed:MAX(rFloat - d, 0.0f)
+                         green:MAX(gFloat - d, 0.0f)
+                          blue:MAX(bFloat - d, 0.0f)
                          alpha:1.0];
 }
 
@@ -421,7 +422,7 @@ static char const * const UINavigationControllerEmbedInPopoverTagKey = "UINaviga
 
   result.usesRoundedArrow = NO;
   result.dimsBackgroundViewsTintColor = YES;
-  result.tintColor = [UIColor colorWithRed:55./255. green:63./255. blue:71./255. alpha:1.0];
+  result.tintColor = [UIColor colorWithRed:55.f/255.f green:63.f/255.f blue:71.f/255.f alpha:1.0f];
   result.outerStrokeColor = nil;
   result.innerStrokeColor = nil;
   result.fillTopColor = result.tintColor;
@@ -455,7 +456,7 @@ static char const * const UINavigationControllerEmbedInPopoverTagKey = "UINaviga
 
   result.usesRoundedArrow = YES;
   result.dimsBackgroundViewsTintColor = YES;
-  result.tintColor = [UIColor colorWithRed:244./255. green:244./255. blue:244./255. alpha:1.0];
+  result.tintColor = [UIColor colorWithRed:244.f/255.f green:244.f/255.f blue:244.f/255.f alpha:1.0f];
   result.outerStrokeColor = [UIColor clearColor];
   result.innerStrokeColor = [UIColor clearColor];
   result.fillTopColor = nil;
@@ -476,7 +477,7 @@ static char const * const UINavigationControllerEmbedInPopoverTagKey = "UINaviga
   result.innerShadowOffset = CGSizeZero;
   result.innerCornerRadius = 0;
   result.viewContentInsets = UIEdgeInsetsZero;
-  result.overlayColor = [UIColor colorWithWhite:0 alpha:0.15];
+  result.overlayColor = [UIColor colorWithWhite:0 alpha:0.15f];
   result.preferredAlpha = 1.0f;
 
 
@@ -546,7 +547,7 @@ static char const * const UINavigationControllerEmbedInPopoverTagKey = "UINaviga
 
 @implementation UIImage (WYPopover)
 
-static float edgeSizeFromCornerRadius(float cornerRadius) {
+static CGFloat edgeSizeFromCornerRadius(CGFloat cornerRadius) {
   return cornerRadius * 2 + 1;
 }
 
@@ -555,8 +556,8 @@ static float edgeSizeFromCornerRadius(float cornerRadius) {
 }
 
 + (UIImage *)imageWithColor:(UIColor *)color
-               cornerRadius:(float)cornerRadius {
-  float min = edgeSizeFromCornerRadius(cornerRadius);
+               cornerRadius:(CGFloat)cornerRadius {
+  CGFloat min = edgeSizeFromCornerRadius(cornerRadius);
 
   CGSize minSize = CGSizeMake(min, min);
 
@@ -565,7 +566,7 @@ static float edgeSizeFromCornerRadius(float cornerRadius) {
 
 + (UIImage *)imageWithColor:(UIColor *)color
                        size:(CGSize)aSize
-               cornerRadius:(float)cornerRadius {
+               cornerRadius:(CGFloat)cornerRadius {
   CGRect rect = CGRectMake(0, 0, aSize.width, aSize.height);
   UIBezierPath *roundedRect = [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:cornerRadius];
   roundedRect.lineWidth = 0;
@@ -1270,15 +1271,15 @@ static float edgeSizeFromCornerRadius(float cornerRadius) {
 
     CGContextSaveGState(context);
     {
-      CGFloat xOffset = _glossShadowOffset.width + round(outerRectBorderRect.size.width);
+      CGFloat xOffset = _glossShadowOffset.width + (CGFloat)round(outerRectBorderRect.size.width);
       CGFloat yOffset = _glossShadowOffset.height;
       CGContextSetShadowWithColor(context,
-                                  CGSizeMake(xOffset + copysign(0.1, xOffset), yOffset + copysign(0.1, yOffset)),
+                                  CGSizeMake(xOffset + (CGFloat)copysign(0.1, xOffset), yOffset + (CGFloat)copysign(0.1, yOffset)),
                                   _glossShadowBlurRadius,
                                   self.glossShadowColor.CGColor);
 
       [outerRectPath addClip];
-      CGAffineTransform transform = CGAffineTransformMakeTranslation(-round(outerRectBorderRect.size.width), 0);
+      CGAffineTransform transform = CGAffineTransformMakeTranslation((CGFloat)-round(outerRectBorderRect.size.width), 0);
       [outerRectNegativePath applyTransform: transform];
       [[UIColor grayColor] setFill];
       [outerRectNegativePath fill];
@@ -1477,8 +1478,8 @@ static WYPopoverTheme *defaultTheme_ = nil;
 
   @autoreleasepool {
     WYPopoverBackgroundView *appearance = [WYPopoverBackgroundView appearance];
-    appearance.usesRoundedArrow = aTheme.usesRoundedArrow;
-    appearance.dimsBackgroundViewsTintColor = aTheme.dimsBackgroundViewsTintColor;
+	appearance.usesRoundedArrow = aTheme.usesRoundedArrow ? 1 : 0;
+    appearance.dimsBackgroundViewsTintColor = aTheme.dimsBackgroundViewsTintColor ? 1 : 0;
     appearance.tintColor = aTheme.tintColor;
     appearance.outerStrokeColor = aTheme.outerStrokeColor;
     appearance.innerStrokeColor = aTheme.innerStrokeColor;
@@ -1529,8 +1530,8 @@ static WYPopoverTheme *defaultTheme_ = nil;
     themeIsUpdating = YES;
 
     WYPopoverBackgroundView *appearance = [WYPopoverBackgroundView appearance];
-    _theme.usesRoundedArrow = appearance.usesRoundedArrow;
-    _theme.dimsBackgroundViewsTintColor = appearance.dimsBackgroundViewsTintColor;
+	_theme.usesRoundedArrow = appearance.usesRoundedArrow ? 1 : 0;
+	_theme.dimsBackgroundViewsTintColor = appearance.dimsBackgroundViewsTintColor ? 1 : 0;
     _theme.tintColor = appearance.tintColor;
     _theme.outerStrokeColor = appearance.outerStrokeColor;
     _theme.innerStrokeColor = appearance.innerStrokeColor;
@@ -1609,8 +1610,8 @@ static WYPopoverTheme *defaultTheme_ = nil;
   if (_theme == nil || themeUpdatesEnabled == NO || themeIsUpdating == YES) return;
 
   if (_backgroundView != nil) {
-    _backgroundView.usesRoundedArrow = _theme.usesRoundedArrow;
-    _backgroundView.dimsBackgroundViewsTintColor = _theme.dimsBackgroundViewsTintColor;
+	_backgroundView.usesRoundedArrow = _theme.usesRoundedArrow ? 1 : 0;
+	_backgroundView.dimsBackgroundViewsTintColor = _theme.dimsBackgroundViewsTintColor ? 1 : 0;
     _backgroundView.tintColor = _theme.tintColor;
     _backgroundView.outerStrokeColor = _theme.outerStrokeColor;
     _backgroundView.innerStrokeColor = _theme.innerStrokeColor;
@@ -2018,7 +2019,7 @@ static WYPopoverTheme *defaultTheme_ = nil;
     }
   }
 
-  transform = CGAffineTransformScale(transform, 0.01, 0.01);
+  transform = CGAffineTransformScale(transform, 0.01f, 0.01f);
 
   return transform;
 }
@@ -2760,13 +2761,13 @@ static CGFloat WYInterfaceOrientationAngleOfOrientation(UIInterfaceOrientation o
   } else {
     switch (orientation) {
       case UIInterfaceOrientationPortraitUpsideDown:
-        angle = M_PI;
+        angle = (CGFloat)M_PI;
         break;
       case UIInterfaceOrientationLandscapeLeft:
-        angle = -M_PI_2;
+        angle = (CGFloat)-M_PI_2;
         break;
       case UIInterfaceOrientationLandscapeRight:
-        angle = M_PI_2;
+        angle = (CGFloat)M_PI_2;
         break;
       default:
         angle = 0.0;
