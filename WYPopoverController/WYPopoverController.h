@@ -210,6 +210,8 @@ typedef NS_OPTIONS(NSUInteger, WYPopoverAnimationOptions) {
 - (void)setPopoverContentSize:(CGSize)size animated:(BOOL)animated;
 - (void)performWithoutAnimation:(void (^)(void))aBlock;
 
+- (void)positionPopover:(BOOL)aAnimated;
+
 @end
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
